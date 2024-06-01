@@ -5,3 +5,5 @@ By using Jadx and decompiling the WatchPower Android APK, I reverse-engineered i
 ```shell
 pip install watchpower-api
 ```
+
+Check the examples folder for how to use the library.
