@@ -1,5 +1,6 @@
 from datetime import date
 import time
+from typing import Any, Dict
 import requests
 import hashlib
 
@@ -30,7 +31,19 @@ class WatchPowerAPI:
             arg_concat = arg_concat + arg
         return self._sha1_str_lower_case(bytes(arg_concat, encoding="utf-8"))
 
-    def login(self, username: str, password: str):
+    def login(self, username: str, password: str) -> "WatchPowerAPI":
+        """Authenticates against the API and stores relevant auth artifacts for follow-up requests using this instance
+
+        Args:
+            username (str): Username of the account you created in the WatchPower application
+            password (str): Password of the account you created in the WatchPower application
+
+        Raises:
+            RuntimeError: If any API error occurs
+
+        Returns:
+            Self: same instance, with stored auth artifacts
+        """
         base_action = (
             f"&action=authSource&usr={username}&company-key={self.company_key}"
             + self.suffix_context
@@ -66,7 +79,23 @@ class WatchPowerAPI:
         wifi_pn: str,
         dev_code: int = 2449,
         dev_addr: int = 1,
-    ):
+    ) -> Dict[str, Any]:
+        """Get inverter daily data
+
+        Args:
+            day (date): Day of data collection
+            serial_number (str): Inverter serial number, can be found through the WatchPower android application.
+            Only numerical digits
+            wifi_pn (str): Wifi PN, can be found through the WatchPower android application. It looks like 'W{digits}'
+            dev_code (int, optional): Not sure what this is. Defaults to 2449.
+            dev_addr (int, optional): Not sure what this is. Defaults to 1.
+
+        Raises:
+            RuntimeError: If there is an http error or the api returns a specific error
+
+        Returns:
+            dict: response json
+        """
         _date = day.isoformat()
         base_action = (
             f"&action=queryDeviceDataOneDay&pn={wifi_pn}&devcode={dev_code}&sn={serial_number}&devaddr={dev_addr}&date={_date}"
