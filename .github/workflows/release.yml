@@ -30,11 +30,8 @@ jobs:
       run: git-changelog --release-notes > release-notes.md
     - name: Build package
       run: poetry build
-    # with trusted publisher in pipy, this is not needed
-    # - name: Configure PiPy credentials
-    #   run: poetry config pypi-token.pypi ${{secrets.PIPY_TOKEN}}
-    - name: Publish to PiPy
-      run: poetry publish
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
     - name: Create Github release
       uses: softprops/action-gh-release@v1
       with:
