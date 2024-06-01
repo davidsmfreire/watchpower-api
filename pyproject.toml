@@ -10,6 +10,9 @@ packages = [{include = "watchpower_api"}]
 python = ">3.8"
 requests = "^2.31.0"
 
+[tool.poetry.group.dev.dependencies]
+git-changelog = "^2.5.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
