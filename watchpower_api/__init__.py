@@ -1,6 +1,6 @@
 from datetime import date
 import time
-from typing import Any, Dict, List
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 import requests
 import hashlib
 
@@ -8,18 +8,18 @@ from watchpower_api.models import DeviceIdentifier
 
 
 class WatchPowerAPI:
-    base_url = "http://android.shinemonitor.com/public/"
-    suffix_context = "&i18n=pt_BR&lang=pt_BR&source=1&_app_client_=android&_app_id_=wifiapp.volfw.watchpower&_app_version_=1.0.6.3"
-    company_key = "bnrl_frRFjEz8Mkn"
+    _BASE_URL: str = "http://android.shinemonitor.com/public/"
+    _SUFFIX_CONTEXT: str = "&i18n=pt_BR&lang=pt_BR&source=1&_app_client_=android&_app_id_=wifiapp.volfw.watchpower&_app_version_=1.0.6.3"
+    _COMPANY_KEY: str = "bnrl_frRFjEz8Mkn"
 
     def __init__(self) -> None:
         # auth
-        self.token = None
-        self.secret = "ems_secret"
-        self.expire = None
+        self.token: Optional[str] = None
+        self.secret: Optional[str] = "ems_secret"
+        self.expire: Optional[str] = None
 
     @staticmethod
-    def _generate_salt():
+    def _generate_salt() -> str:
         return str(round(time.time() * 1000))
 
     @staticmethod
@@ -27,11 +27,18 @@ class WatchPowerAPI:
         sha1_hash = hashlib.sha1(byte_array).hexdigest()
         return sha1_hash.lower()
 
-    def _hash(self, *args):
+    def _hash(self, *args: str) -> str:
         arg_concat = ""
         for arg in args:
             arg_concat = arg_concat + arg
         return self._sha1_str_lower_case(bytes(arg_concat, encoding="utf-8"))
+
+    def _ensure_logged_in(self) -> Tuple[str, str]:
+        if self.token is None or self.secret is None:
+            raise RuntimeError(
+                "Must login first using .login(username, password) method"
+            )
+        return self.token, self.secret
 
     def login(self, username: str, password: str) -> "WatchPowerAPI":
         """Authenticates against the API and stores relevant auth artifacts for follow-up requests using this instance
@@ -47,8 +54,8 @@ class WatchPowerAPI:
             Self: same instance, with stored auth artifacts
         """
         base_action = (
-            f"&action=authSource&usr={username}&company-key={self.company_key}"
-            + self.suffix_context
+            f"&action=authSource&usr={username}&company-key={self._COMPANY_KEY}"
+            + self._SUFFIX_CONTEXT
         )
 
         salt = self._generate_salt()
@@ -57,14 +64,14 @@ class WatchPowerAPI:
 
         sign = self._hash(salt, password_hash, base_action)
 
-        url = self.base_url + f"?sign={sign}&salt={salt}" + base_action
+        url = self._BASE_URL + f"?sign={sign}&salt={salt}" + base_action
 
         response = requests.get(url)
 
-        response_data = response.json()
+        response_data: Dict[str, Any] = response.json()
 
         if response.status_code == 200:
-            error_code = response_data["err"]
+            error_code: int = response_data["err"]
             if error_code == 0:
                 print("Login successful!")
                 self.secret = response_data["dat"]["secret"]
@@ -98,20 +105,21 @@ class WatchPowerAPI:
         Returns:
             dict: response json
         """
+        token, secret = self._ensure_logged_in()
         _date = day.isoformat()
         base_action = (
             f"&action=queryDeviceDataOneDay&pn={wifi_pn}&devcode={dev_code}&sn={serial_number}&devaddr={dev_addr}&date={_date}"
-            + self.suffix_context
+            + self._SUFFIX_CONTEXT
         )
         salt = self._generate_salt()
-        sign = self._hash(salt, self.secret, self.token, base_action)
+        sign = self._hash(salt, secret, token, base_action)
         auth = f"?sign={sign}&salt={salt}&token={self.token}"
-        url = self.base_url + auth + base_action
+        url = self._BASE_URL + auth + base_action
         response = requests.get(url)
 
         if response.status_code == 200:
-            response_data = response.json()
-            error_code = response_data["err"]
+            response_data: Dict[str, Any] = response.json()
+            error_code: int = response_data["err"]
             if error_code == 0:
                 return response_data
             raise RuntimeError(response_data)
@@ -128,16 +136,17 @@ class WatchPowerAPI:
         Returns:
             dict: response json
         """
-        base_action = "&action=webQueryDeviceEs" + self.suffix_context
+        token, secret = self._ensure_logged_in()
+        base_action = "&action=webQueryDeviceEs" + self._SUFFIX_CONTEXT
         salt = self._generate_salt()
-        sign = self._hash(salt, self.secret, self.token, base_action)
+        sign = self._hash(salt, secret, token, base_action)
         auth = f"?sign={sign}&salt={salt}&token={self.token}"
-        url = self.base_url + auth + base_action
+        url = self._BASE_URL + auth + base_action
         response = requests.get(url)
 
         if response.status_code == 200:
-            response_data = response.json()
-            error_code = response_data["err"]
+            response_data: Dict[str, Any] = response.json()
+            error_code: int = response_data["err"]
             if error_code == 0:
                 return [
                     DeviceIdentifier(**data) for data in response_data["dat"]["device"]
