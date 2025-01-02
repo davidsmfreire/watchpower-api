@@ -156,14 +156,14 @@ class WatchPowerAPI:
 
     def get_device_daily_data(
         self,
-        device_identifiers: DeviceIdentifier,
+        device_identifier: DeviceIdentifier,
         day: date,
     ) -> Dict[str, Any]:
         """Get inverter daily data
 
         Args:
             day (date): Day of data collection
-            device_identifiers (DeviceIdentifier): Inverter identifiers
+            device_identifier (DeviceIdentifier): Inverter identifier
 
         Raises:
             RuntimeError: If there is an http error or the api returns a specific error
@@ -173,8 +173,8 @@ class WatchPowerAPI:
         """
         return self.get_daily_data(
             day=day,
-            serial_number=device_identifiers.serial_number,
-            wifi_pn=device_identifiers.wifi_pin,
-            dev_code=device_identifiers.device_code,
-            dev_addr=device_identifiers.device_address,
+            serial_number=device_identifier.serial_number,
+            wifi_pn=device_identifier.wifi_pin,
+            dev_code=device_identifier.device_code,
+            dev_addr=device_identifier.device_address,
         )
