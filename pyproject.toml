@@ -9,7 +9,7 @@ packages = [{include = "watchpower_api"}]
 [tool.poetry.dependencies]
 python = ">3.8"
 requests = "^2.31.0"
-pydantic = "^2.10.4"
+pydantic = ">=1.0.0,<3.0.0"
 
 [tool.poetry.group.dev.dependencies]
 git-changelog = "^2.5.2"

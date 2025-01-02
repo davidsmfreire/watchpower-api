@@ -248,6 +248,25 @@ files = [
 ]
 
 [[package]]
+name = "pydantic"
+version = "1.0"
+description = "Data validation and settings management using python 3.6 type hinting"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "pydantic-1.0-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:0f35a8d780534f3db5c36fe4d516bd7a12559d6972dccbc55161a90eb20dd67a"},
+    {file = "pydantic-1.0-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:360433b2422fcb2203356a30a90f6ae45d9e613243588504509aa5d544d6f68e"},
+    {file = "pydantic-1.0-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:751f755efb9ab395ec7bd562f123e57a68e6164f06fc735b04ccb8df1ad5b6c8"},
+    {file = "pydantic-1.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:c044e589c6d8d54ad55f5e73aa8f8d61dcab038b0a6267988d68e0361ae77f0e"},
+    {file = "pydantic-1.0-py36.py37.py38-none-any.whl", hash = "sha256:a1ba32e2284185260cf5d35ffe2c8cbdd2244d62e5952e69572d4a458d6d46a7"},
+    {file = "pydantic-1.0.tar.gz", hash = "sha256:bf474cebe007701806f5f8b076fb8508116606e5c721734bb855bfec4185263c"},
+]
+
+[package.extras]
+email = ["email-validator (>=1.0.3)"]
+typing-extensions = ["typing-extensions (>=3.7.2)"]
+
+[[package]]
 name = "python-dotenv"
 version = "1.0.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -324,4 +343,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">3.8"
-content-hash = "3a675c02dac67f9c71f969dda11029f20b6a36ef2984f31a1a028b39eb8c80b9"
+content-hash = "92d79c7633d1678cab5bddffd7b2a526aceaf5d9ff8fe70b6b2bc0fbe9ac25d6"
