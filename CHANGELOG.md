@@ -1,12 +1,20 @@
-# Changelog
+# CHANGELOG
 
-All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+## v0.2.0 (2025-01-02)
 
-<!-- insertion marker -->
-## [0.1.0](https://github.com/davidsmfreire/watchpower-api/releases/tag/0.1.0) - 2024-06-01
+### Bug Fixes
 
-<small>[Compare with first commit](https://github.com/davidsmfreire/watchpower-api/compare/c2300b09823b572655f3bcbe4f565aee25533226...0.1.0)</small>
+- Update deprecated example file.
+  ([`43142b8`](https://github.com/davidsmfreire/watchpower-api/commit/43142b803ef2d15a0c8aa991680cac9628de6fcc))
 
+### Features
+
+- Add the ability to fetch devices identifiers from the account.
+  ([`48899d4`](https://github.com/davidsmfreire/watchpower-api/commit/48899d400666864f8075cd7b42dfc5a51b3cff0a))
+
+- Improve typing and add login validation
+  ([`9bf064f`](https://github.com/davidsmfreire/watchpower-api/commit/9bf064fd7ff1f29856c89853fc0df9de0024d3d7))
+
+
+## v0.1.0 (2024-06-01)
