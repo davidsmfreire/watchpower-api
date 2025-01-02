@@ -7,3 +7,10 @@ pip install watchpower-api
 ```
 
 Check the examples folder for how to use the library.
+To run examples or develop for this library its best to use [Poetry](https://python-poetry.org/). Clone the project and run:
+
+```
+poetry install
+```
+
+It should install all necessary dependencies.
