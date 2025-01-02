@@ -13,11 +13,13 @@ SERIAL_NUMBER = os.environ["SERIAL_NUMBER"]
 WIFI_PN = os.environ["WIFI_PN"]
 print(USERNAME)
 
+
 def main():
     api = WatchPowerAPI()
     api.login(USERNAME, PASSWORD)
-    raw_data = api.get_daily_data(date(2024,6,1), SERIAL_NUMBER, WIFI_PN)
+    raw_data = api.get_daily_data(date(2024, 6, 1), SERIAL_NUMBER, WIFI_PN)
     print(raw_data)
+
 
 if __name__ == "__main__":
     main()
