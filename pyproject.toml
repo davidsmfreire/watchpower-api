@@ -8,8 +8,8 @@ packages = [{include = "watchpower_api"}]
 
 [tool.poetry.dependencies]
 python = ">3.8"
-requests = "^2.31.0"
 pydantic = ">=1.0.0,<3.0.0"
+requests = ">=2.25.0"
 
 [tool.poetry.group.examples.dependencies]
 python-dotenv = "^1.0.1"
