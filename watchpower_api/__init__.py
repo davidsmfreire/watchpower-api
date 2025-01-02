@@ -4,7 +4,7 @@ from typing import Any, Dict, List
 import requests
 import hashlib
 
-from watchpower_api.models import DeviceIdentifiers
+from watchpower_api.models import DeviceIdentifier
 
 
 class WatchPowerAPI:
@@ -119,7 +119,7 @@ class WatchPowerAPI:
 
     def get_devices(
         self,
-    ) -> List[DeviceIdentifiers]:
+    ) -> List[DeviceIdentifier]:
         """Get user connected devices
 
         Raises:
@@ -140,21 +140,21 @@ class WatchPowerAPI:
             error_code = response_data["err"]
             if error_code == 0:
                 return [
-                    DeviceIdentifiers(**data) for data in response_data["dat"]["device"]
+                    DeviceIdentifier(**data) for data in response_data["dat"]["device"]
                 ]
             raise RuntimeError(response_data)
         raise RuntimeError(response.status_code)
 
     def get_device_daily_data(
         self,
-        device_identifiers: DeviceIdentifiers,
+        device_identifiers: DeviceIdentifier,
         day: date,
     ) -> Dict[str, Any]:
         """Get inverter daily data
 
         Args:
             day (date): Day of data collection
-            device_identifiers (DeviceIdentifiers): Inverter identifiers
+            device_identifiers (DeviceIdentifier): Inverter identifiers
 
         Raises:
             RuntimeError: If there is an http error or the api returns a specific error

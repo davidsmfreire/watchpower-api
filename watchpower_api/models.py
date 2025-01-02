@@ -8,7 +8,7 @@ PYDANTIC_VERSION: str = str(_PYDANTIC_VERSION)
 if PYDANTIC_VERSION.startswith("2."):
     from pydantic import ConfigDict
 
-class DeviceIdentifiers(BaseModel):
+class DeviceIdentifier(BaseModel):
     device_alias: Optional[str] = Field(default=None, alias="devalias")
     serial_number: str = Field(..., alias="sn")
     wifi_pin: str = Field(..., alias="pn")
