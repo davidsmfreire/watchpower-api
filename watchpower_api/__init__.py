@@ -1,8 +1,10 @@
 from datetime import date
 import time
-from typing import Any, Dict
+from typing import Any, Dict, List
 import requests
 import hashlib
+
+from watchpower_api.models import DeviceIdentifiers
 
 
 class WatchPowerAPI:
@@ -114,3 +116,56 @@ class WatchPowerAPI:
                 return response_data
             raise RuntimeError(response_data)
         raise RuntimeError(response.status_code)
+
+    def get_devices(
+        self,
+    ) -> List[DeviceIdentifiers]:
+        """Get user connected devices
+
+        Raises:
+            RuntimeError: If there is an http error or the api returns a specific error
+
+        Returns:
+            dict: response json
+        """
+        base_action = "&action=webQueryDeviceEs" + self.suffix_context
+        salt = self._generate_salt()
+        sign = self._hash(salt, self.secret, self.token, base_action)
+        auth = f"?sign={sign}&salt={salt}&token={self.token}"
+        url = self.base_url + auth + base_action
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            response_data = response.json()
+            error_code = response_data["err"]
+            if error_code == 0:
+                return [
+                    DeviceIdentifiers(**data) for data in response_data["dat"]["device"]
+                ]
+            raise RuntimeError(response_data)
+        raise RuntimeError(response.status_code)
+
+    def get_device_daily_data(
+        self,
+        device_identifiers: DeviceIdentifiers,
+        day: date,
+    ) -> Dict[str, Any]:
+        """Get inverter daily data
+
+        Args:
+            day (date): Day of data collection
+            device_identifiers (DeviceIdentifiers): Inverter identifiers
+
+        Raises:
+            RuntimeError: If there is an http error or the api returns a specific error
+
+        Returns:
+            dict: response json
+        """
+        return self.get_daily_data(
+            day=day,
+            serial_number=device_identifiers.serial_number,
+            wifi_pn=device_identifiers.wifi_pin,
+            dev_code=device_identifiers.device_code,
+            dev_addr=device_identifiers.device_address,
+        )

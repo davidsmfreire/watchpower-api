@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "watchpower-api"
-version = "0.1.0"
+version = "0.1.1"
 description = "WatchPower Rest-API client in Python"
 authors = ["David Freire <davidsmfreire@gmail.com>"]
 readme = "README.md"
@@ -9,6 +9,7 @@ packages = [{include = "watchpower_api"}]
 [tool.poetry.dependencies]
 python = ">3.8"
 requests = "^2.31.0"
+pydantic = "^2.10.4"
 
 [tool.poetry.group.dev.dependencies]
 git-changelog = "^2.5.2"
@@ -16,3 +17,4 @@ git-changelog = "^2.5.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
