@@ -1,40 +1,54 @@
-name: release
+name: CI
 
 on:
   push:
-    tags:
-        - "*.*.*"
-
-permissions:
-  contents: write
-  id-token: write
+    branches:
+      - main
+  pull_request:
 
 jobs:
-  release:
+  lint:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Fetch all tags
-      run: git fetch --depth=1 --tags
-    - name: Install Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    - name: Install poetry
-      uses: abatilo/actions-poetry@v2
-      with:
-        poetry-version: '1.7.1'
-    - name: Install git-changelog
-      run: pip install git-changelog
-    - name: Prepare release notes
-      run: git-changelog --release-notes > release-notes.md
-    - name: Build package
-      run: poetry build
-    - name: Publish package distributions to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-    - name: Create Github release
-      uses: softprops/action-gh-release@v1
-      with:
-        body_path: release-notes.md
-        files: dist/*
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: pre-commit/action@v3.0.1
+
+  # Make sure commit messages follow the conventional commits convention:
+  # https://www.conventionalcommits.org
+  commitlint:
+    name: Lint Commit Messages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v4.1.11
+
+  release:
+    runs-on: ubuntu-latest
+    environment: release
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - lint
+      - commitlint
+      # - test # TODO
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+
+      # Run semantic release:
+      # - Update CHANGELOG.md
+      # - Update version in code
+      # - Create git tag
+      # - Create GitHub release
+      # - Publish to PyPI
+      - name: Python Semantic Release
+        uses: python-semantic-release/python-semantic-release@v9.15.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
