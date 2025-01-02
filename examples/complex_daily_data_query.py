@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from watchpower_api import WatchPowerAPI
 
 load_dotenv()
-START = "2022-09-08"
-END = "2023-07-01"
+START = "2024-06-01"
+END = "2024-06-02"
 USERNAME = os.environ["USERNAME"]
 PASSWORD = os.environ["PASSWORD"]
 SERIAL_NUMBER = os.environ["SERIAL_NUMBER"]
@@ -15,16 +15,16 @@ WIFI_PN = os.environ["WIFI_PN"]
 
 def normalize_data(raw_data: pd.DataFrame) -> pd.DataFrame:
     # Normalize the JSON data into a DataFrame
-    df = pd.json_normalize(raw_data['dat']['row'])
-    titles = pd.json_normalize(raw_data['dat']['title'])
+    df = pd.json_normalize(raw_data["dat"]["row"])
+    titles = pd.json_normalize(raw_data["dat"]["title"])
     
     df[titles["title"]] = pd.DataFrame(df["field"].tolist(), index=df.index)
     df = df.drop(columns="field")
     return df
 
 def main():
-    api = WatchPowerAPI(USERNAME, PASSWORD)
-    api.login()
+    api = WatchPowerAPI()
+    api.login(USERNAME, PASSWORD)
 
     all_data = []
     date_range = pd.date_range(START, END, freq="D")
