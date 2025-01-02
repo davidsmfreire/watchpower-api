@@ -12,6 +12,7 @@ requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 git-changelog = "^2.5.2"
+python-dotenv = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core"]
