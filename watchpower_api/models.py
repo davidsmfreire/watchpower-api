@@ -1,4 +1,4 @@
-from typing import Optional, cast
+from typing import Optional
 from pydantic import BaseModel, Field
 
 from pydantic.version import VERSION as _PYDANTIC_VERSION

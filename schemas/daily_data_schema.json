@@ -1,86 +1,74 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "$ref": "#/definitions/Welcome5",
-    "definitions": {
-        "Welcome5": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "err": {
-                    "type": "integer"
-                },
-                "desc": {
-                    "type": "string"
-                },
-                "dat": {
-                    "$ref": "#/definitions/DAT"
-                }
-            },
-            "required": [
-                "dat",
-                "desc",
-                "err"
-            ],
-            "title": "Welcome5"
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome5",
+  "definitions": {
+    "Welcome5": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "err": {
+          "type": "integer"
         },
-        "DAT": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "title": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Title"
-                    }
-                },
-                "row": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Row"
-                    }
-                }
-            },
-            "required": [
-                "row",
-                "title"
-            ],
-            "title": "DAT"
+        "desc": {
+          "type": "string"
         },
-        "Row": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "realtime": {
-                    "type": "boolean"
-                },
-                "field": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            },
-            "required": [
-                "field",
-                "realtime"
-            ],
-            "title": "Row"
-        },
-        "Title": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "title": {
-                    "type": "string"
-                },
-                "unit": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "title"
-            ],
-            "title": "Title"
+        "dat": {
+          "$ref": "#/definitions/DAT"
         }
+      },
+      "required": ["dat", "desc", "err"],
+      "title": "Welcome5"
+    },
+    "DAT": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Title"
+          }
+        },
+        "row": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Row"
+          }
+        }
+      },
+      "required": ["row", "title"],
+      "title": "DAT"
+    },
+    "Row": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "realtime": {
+          "type": "boolean"
+        },
+        "field": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["field", "realtime"],
+      "title": "Row"
+    },
+    "Title": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        }
+      },
+      "required": ["title"],
+      "title": "Title"
     }
+  }
 }

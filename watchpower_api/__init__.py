@@ -1,12 +1,13 @@
 from datetime import date
 import time
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Optional
 import requests
 import hashlib
 
 from watchpower_api.models import DeviceIdentifier
 
 __version__ = "0.2.0"
+
 
 class WatchPowerAPI:
     _BASE_URL: str = "http://android.shinemonitor.com/public/"
@@ -25,7 +26,7 @@ class WatchPowerAPI:
 
     @staticmethod
     def _sha1_str_lower_case(byte_array: bytes) -> str:
-        sha1_hash = hashlib.sha1(byte_array).hexdigest()
+        sha1_hash = hashlib.sha1(byte_array).hexdigest()  # nosec
         return sha1_hash.lower()
 
     def _hash(self, *args: str) -> str:
@@ -34,7 +35,7 @@ class WatchPowerAPI:
             arg_concat = arg_concat + arg
         return self._sha1_str_lower_case(bytes(arg_concat, encoding="utf-8"))
 
-    def _ensure_logged_in(self) -> Tuple[str, str]:
+    def _ensure_logged_in(self) -> tuple[str, str]:
         if self.token is None or self.secret is None:
             raise RuntimeError(
                 "Must login first using .login(username, password) method"
@@ -67,9 +68,9 @@ class WatchPowerAPI:
 
         url = self._BASE_URL + f"?sign={sign}&salt={salt}" + base_action
 
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
 
-        response_data: Dict[str, Any] = response.json()
+        response_data: dict[str, Any] = response.json()
 
         if response.status_code == 200:
             error_code: int = response_data["err"]
@@ -89,7 +90,7 @@ class WatchPowerAPI:
         wifi_pn: str,
         dev_code: int = 2449,
         dev_addr: int = 1,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Get inverter daily data
 
         Args:
@@ -116,10 +117,10 @@ class WatchPowerAPI:
         sign = self._hash(salt, secret, token, base_action)
         auth = f"?sign={sign}&salt={salt}&token={self.token}"
         url = self._BASE_URL + auth + base_action
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
 
         if response.status_code == 200:
-            response_data: Dict[str, Any] = response.json()
+            response_data: dict[str, Any] = response.json()
             error_code: int = response_data["err"]
             if error_code == 0:
                 return response_data
@@ -128,7 +129,7 @@ class WatchPowerAPI:
 
     def get_devices(
         self,
-    ) -> List[DeviceIdentifier]:
+    ) -> list[DeviceIdentifier]:
         """Get user connected devices
 
         Raises:
@@ -143,10 +144,10 @@ class WatchPowerAPI:
         sign = self._hash(salt, secret, token, base_action)
         auth = f"?sign={sign}&salt={salt}&token={self.token}"
         url = self._BASE_URL + auth + base_action
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
 
         if response.status_code == 200:
-            response_data: Dict[str, Any] = response.json()
+            response_data: dict[str, Any] = response.json()
             error_code: int = response_data["err"]
             if error_code == 0:
                 return [
@@ -159,7 +160,7 @@ class WatchPowerAPI:
         self,
         device_identifier: DeviceIdentifier,
         day: date,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Get inverter daily data
 
         Args:

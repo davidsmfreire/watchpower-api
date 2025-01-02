@@ -1,6 +1,5 @@
 # CHANGELOG
 
-
 ## v0.2.0 (2025-01-02)
 
 ### Bug Fixes
@@ -15,6 +14,5 @@
 
 - Improve typing and add login validation
   ([`9bf064f`](https://github.com/davidsmfreire/watchpower-api/commit/9bf064fd7ff1f29856c89853fc0df9de0024d3d7))
-
 
 ## v0.1.0 (2024-06-01)
