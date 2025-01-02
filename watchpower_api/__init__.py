@@ -6,6 +6,7 @@ import hashlib
 
 from watchpower_api.models import DeviceIdentifier
 
+__version__ = "0.1.0"
 
 class WatchPowerAPI:
     _BASE_URL: str = "http://android.shinemonitor.com/public/"
