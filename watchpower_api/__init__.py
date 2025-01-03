@@ -88,18 +88,19 @@ class WatchPowerAPI:
         day: date,
         serial_number: str,
         wifi_pn: str,
-        dev_code: int = 2449,
-        dev_addr: int = 1,
+        dev_code: int,
+        dev_addr: int,
     ) -> dict[str, Any]:
         """Get inverter daily data
 
         Args:
             day (date): Day of data collection
-            serial_number (str): Inverter serial number, can be found through the WatchPower android application.
-            Only numerical digits
-            wifi_pn (str): Wifi PN, can be found through the WatchPower android application. It looks like 'W{digits}'
-            dev_code (int, optional): Not sure what this is. Defaults to 2449.
-            dev_addr (int, optional): Not sure what this is. Defaults to 1.
+            serial_number (str): Inverter serial number, can be found through the WatchPower android application or
+            through the result of .get_devices(). Only numerical digits
+            wifi_pn (str): Wifi PN, can be found through the WatchPower android application or through the result of
+            .get_devices(). It looks like 'W{digits}'
+            dev_code (int, optional): Device code. You can get it through .get_devices() result.
+            dev_addr (int, optional): Device address. You can get it through .get_devices() result.
 
         Raises:
             RuntimeError: If there is an http error or the api returns a specific error

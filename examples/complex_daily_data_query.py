@@ -12,7 +12,8 @@ USERNAME = os.environ["USERNAME"]
 PASSWORD = os.environ["PASSWORD"]
 SERIAL_NUMBER = os.environ["SERIAL_NUMBER"]
 WIFI_PN = os.environ["WIFI_PN"]
-DEV_CODE = os.environ["DEV_CODE"]
+DEV_CODE = int(os.environ["DEV_CODE"])
+DEV_ADDR = int(os.environ["DEV_ADDR"])
 
 
 def normalize_data(raw_data: pd.DataFrame) -> pd.DataFrame:
@@ -35,11 +36,11 @@ def main():
     for _date in tqdm(date_range, total=len(date_range)):
         try:
             raw_data = api.get_daily_data(
-                _date.date(), SERIAL_NUMBER, WIFI_PN, DEV_CODE
+                _date.date(), SERIAL_NUMBER, WIFI_PN, DEV_CODE, DEV_ADDR
             )
             data = normalize_data(raw_data)
             data.to_csv(f"outputs/daily_data_{_date.date().isoformat()}.csv")
-            all_data.append(normalize_data(raw_data))
+            all_data.append(data)
         except Exception as e:
             print(f"Failed to get date {_date.date()}: {e}")
             continue
