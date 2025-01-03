@@ -1,2 +1,3 @@
-changelog:
-	poetry run git-changelog -o CHANGELOG.md -p github --bump=auto
+dev-setup:
+	poetry install
+	poetry run pre-commit install
